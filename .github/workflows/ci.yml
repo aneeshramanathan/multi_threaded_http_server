@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            backend: kqueue
+          - os: ubuntu-latest
+            backend: epoll
+          - os: ubuntu-latest
+            backend: kqueue # via libkqueue
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / ${{ matrix.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install libkqueue
+        if: matrix.os == 'ubuntu-latest' && matrix.backend == 'kqueue'
+        run: sudo apt-get update && sudo apt-get install -y libkqueue-dev
+      - name: Unit + end-to-end tests
+        run: make test BACKEND=${{ matrix.backend }}
+      - name: Benchmark (100 connections, 10s)
+        run: make bench BACKEND=${{ matrix.backend }}
+
+  sanitizers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ASan + UBSan
+        run: make sanitize

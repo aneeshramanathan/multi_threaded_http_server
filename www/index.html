@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mthttp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <h1>mthttp</h1>
+    <p>A multithreaded, non-blocking HTTP/1.1 server written in C with kqueue/epoll and pthreads.</p>
+    <h2>Live stats</h2>
+    <pre id="stats">loading…</pre>
+    <h2>Endpoints</h2>
+    <ul>
+      <li><code>GET /health</code> – liveness check</li>
+      <li><code>GET /api/stats</code> – request and connection counters</li>
+      <li><code>POST /api/echo</code> – echoes the request body</li>
+      <li><code>GET /&lt;file&gt;</code> – static files from the docroot</li>
+    </ul>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
