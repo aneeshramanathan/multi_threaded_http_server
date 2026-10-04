@@ -26,7 +26,9 @@ jobs:
       - name: Unit + end-to-end tests
         run: make test BACKEND=${{ matrix.backend }}
       - name: Benchmark (100 connections, 10s)
-        run: make bench BACKEND=${{ matrix.backend }}
+        run: |
+          make bench BACKEND=${{ matrix.backend }} | tee bench.txt
+          echo "::notice title=bench ${{ matrix.os }}/${{ matrix.backend }}::$(grep -E 'requests ok|failures|throughput|latency' bench.txt | tr -s ' ' | paste -sd ';' -)"
 
   sanitizers:
     runs-on: ubuntu-latest
