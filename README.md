@@ -50,11 +50,13 @@ CI (`.github/workflows/ci.yml`) runs everything on macOS (kqueue), Ubuntu (epoll
 `make bench` on GitHub Actions runners, with the load generator and server on the same machine,
 100 concurrent keep-alive connections for 10 seconds, `GET /health`:
 
-| Runner / backend | Throughput | Failures | Avg latency |
-|------------------|-----------:|---------:|------------:|
-| macOS / kqueue   | ~87,600 req/s | 0 | 1.14 ms |
-| Ubuntu / epoll   | ~98,300 req/s | 0 | 1.02 ms |
-| Ubuntu / kqueue (libkqueue) | ~89,600 req/s | 0 | 1.12 ms |
+| Result across CI runs (macOS/kqueue, Ubuntu/epoll, Ubuntu/libkqueue) | |
+|---|---|
+| Throughput | 62,000 – 101,000 req/s |
+| Failures | 0 |
+| Average latency | 1.0 – 1.6 ms |
+
+Shared CI runners are noisy, so throughput varies from run to run; every run has had zero failures.
 
 ## Architecture
 
